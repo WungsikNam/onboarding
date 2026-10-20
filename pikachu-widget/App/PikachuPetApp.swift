@@ -25,7 +25,7 @@ struct PikachuPetApp: App {
         }
     }
 
-    static func scheduleRefresh() {
+    nonisolated static func scheduleRefresh() {
         let request = BGAppRefreshTaskRequest(identifier: refreshTaskID)
         request.earliestBeginDate = Date.now.addingTimeInterval(30 * 60)
         try? BGTaskScheduler.shared.submit(request)

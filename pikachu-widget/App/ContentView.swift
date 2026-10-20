@@ -93,8 +93,8 @@ struct ContentView: View {
                 TimelineView(.animation) { context in
                     let t = context.date.timeIntervalSinceReferenceDate
                     let excited = state.mood == .happy || state.reaction != nil
-                    let hop = state.isSleeping ? 0 : abs(sin(t * (excited ? 5 : 2.2))) * (excited ? 16 : 5)
-                    let breathe = state.isSleeping ? 1 + sin(t * 1.6) * 0.025 : 1
+                    let hop: Double = state.isSleeping ? 0 : abs(sin(t * (excited ? 5 : 2.2))) * (excited ? 16 : 5)
+                    let breathe: Double = state.isSleeping ? 1 + sin(t * 1.6) * 0.025 : 1
                     PetScene(state: state, decorationSize: 26)
                         .scaleEffect(breathe, anchor: .bottom)
                         .offset(y: -hop)

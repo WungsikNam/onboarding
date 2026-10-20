@@ -30,7 +30,8 @@ struct PikachuLook: Hashable {
         case .eat, .play, .love, .clean, .levelUp, .evolve:
             return (.happy, .open)
         case .refuse:
-            return mood == .sleeping ? (.closed, .small) : (.sad, .frown)
+            if mood == .sleeping { return (.closed, .small) }
+            return (.sad, .frown)
         case .sleep:
             return (.closed, .small)
         case .wake:
@@ -95,8 +96,21 @@ enum PikachuDrawing {
         return l
     }
 
+    private static var cache: [PikachuLook: [ArtPaint]] = [:]
+    private static let cacheLock = NSLock()
+
     /// Flattens layers into fills; strokes become filled outlines so everything scales together.
+    /// Cached per look, since the app redraws Pikachu every animation frame.
     static func paints(for look: PikachuLook) -> [ArtPaint] {
+        cacheLock.lock()
+        defer { cacheLock.unlock() }
+        if let cached = cache[look] { return cached }
+        let out = buildPaints(for: look)
+        cache[look] = out
+        return out
+    }
+
+    private static func buildPaints(for look: PikachuLook) -> [ArtPaint] {
         var out: [ArtPaint] = []
         for layer in layers(for: look) {
             if let fill = layer.fill {

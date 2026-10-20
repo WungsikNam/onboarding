@@ -82,7 +82,7 @@ private struct LiveStatBar: View {
                         EmptyView()
                     }
                 } else {
-                    ProgressView(value: countsDown ? 0 : 1)
+                    ProgressView(value: countsDown ? 0.0 : 1.0)
                 }
             }
             .tint(value < 25 ? .red : color)
@@ -116,7 +116,7 @@ private struct FullnessRing: View {
                     EmptyView()
                 }
             } else {
-                ProgressView(value: 0)
+                ProgressView(value: 0.0)
             }
         }
         .progressViewStyle(.circular)
